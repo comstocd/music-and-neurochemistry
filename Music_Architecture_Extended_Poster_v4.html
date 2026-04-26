@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Architecture Taxonomy — Extended Poster v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root {
+  --bg:#07080c; --bg2:#0c0e16; --bg3:#111420;
+  --white:#ede9e0; --muted:#5a6070; --muted2:#3a404f; --border:rgba(255,255,255,0.06);
+  --c1:#2ab8c8; --c2:#c9913a; --c3:#c85a8a; --c4:#7a7fd4;
+  --c5:#d45050; --c6:#4caf7d; --c7:#7a9ab5; --c8:#9b6dca; --c9:#7ac43a;
+  --c1d:rgba(42,184,200,.12); --c2d:rgba(201,145,58,.12); --c3d:rgba(200,90,138,.12);
+  --c4d:rgba(122,127,212,.12); --c5d:rgba(212,80,80,.12); --c6d:rgba(76,175,125,.12);
+  --c7d:rgba(122,154,181,.12); --c8d:rgba(155,109,202,.12); --c9d:rgba(122,196,58,.12);
+}
+body{background:var(--bg);color:var(--white);font-family:'DM Mono',monospace}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.3;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+
+.poster{max-width:1160px;margin:0 auto;padding:48px 38px 64px}
+
+.hdr{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;
+  border-bottom:1px solid var(--border);padding-bottom:30px;margin-bottom:36px;animation:up .7s ease both}
+.eyebrow{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.eyebrow::after{content:'';width:80px;height:1px;background:var(--border)}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,54px);font-weight:300;line-height:1.06;letter-spacing:-.02em}
+h1 em{font-style:italic;color:var(--c2)}
+.sub{font-size:9.5px;color:var(--muted);letter-spacing:.06em;line-height:1.65;margin-top:9px;max-width:540px}
+.hdr-r{text-align:right}
+.badge{display:inline-block;font-size:8px;letter-spacing:.13em;text-transform:uppercase;
+  border:1px solid var(--muted2);color:var(--muted);padding:3px 8px;border-radius:2px;margin-bottom:5px}
+
+.sdiv{display:flex;align-items:center;gap:12px;margin:32px 0 18px}
+.sdiv-l{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2);white-space:nowrap}
+.sdiv-line{flex:1;height:1px;background:var(--border)}
+.sdiv-c{font-family:'Bebas Neue',sans-serif;font-size:11px;color:var(--muted2);letter-spacing:.1em}
+
+/* 3x3 ARCH GRID */
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+
+.ac{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:16px 14px 13px;
+  position:relative;overflow:hidden;animation:up .7s ease both;transition:transform .15s}
+.ac:hover{transform:translateY(-2px)}
+.ac::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.ac.c1::before{background:var(--c1)} .ac.c2::before{background:var(--c2)} .ac.c3::before{background:var(--c3)}
+.ac.c4::before{background:var(--c4)} .ac.c5::before{background:var(--c5)} .ac.c6::before{background:var(--c6)}
+.ac.c7::before{background:var(--c7)} .ac.c8::before{background:var(--c8)} .ac.c9::before{background:var(--c9)}
+
+.ac-n{font-family:'Bebas Neue',sans-serif;font-size:30px;line-height:1;opacity:.14;margin-bottom:4px}
+.c1 .ac-n{color:var(--c1)} .c2 .ac-n{color:var(--c2)} .c3 .ac-n{color:var(--c3)}
+.c4 .ac-n{color:var(--c4)} .c5 .ac-n{color:var(--c5)} .c6 .ac-n{color:var(--c6)}
+.c7 .ac-n{color:var(--c7)} .c8 .ac-n{color:var(--c8)} .c9 .ac-n{color:var(--c9)}
+
+.ac-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;line-height:1.25;margin-bottom:7px}
+.ac-tag{font-size:8px;letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border-radius:2px;display:inline-block;margin-bottom:8px}
+.c1 .ac-tag{background:var(--c1d);color:var(--c1)} .c2 .ac-tag{background:var(--c2d);color:var(--c2)}
+.c3 .ac-tag{background:var(--c3d);color:var(--c3)} .c4 .ac-tag{background:var(--c4d);color:var(--c4)}
+.c5 .ac-tag{background:var(--c5d);color:var(--c5)} .c6 .ac-tag{background:var(--c6d);color:var(--c6)}
+.c7 .ac-tag{background:var(--c7d);color:var(--c7)} .c8 .ac-tag{background:var(--c8d);color:var(--c8)}
+.c9 .ac-tag{background:var(--c9d);color:var(--c9)}
+
+.ac-wave{width:100%;height:34px;margin:6px 0}
+.ac-g{font-size:9px;color:var(--muted);line-height:1.5;margin-bottom:4px}
+.ac-e{font-size:8px;color:var(--muted2);line-height:1.5;font-style:italic}
+
+/* 3x3 NEURO */
+.neuro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.nc{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:12px}
+.nc-l{font-size:8px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.c1 .nc-l{color:var(--c1)} .c2 .nc-l{color:var(--c2)} .c3 .nc-l{color:var(--c3)}
+.c4 .nc-l{color:var(--c4)} .c5 .nc-l{color:var(--c5)} .c6 .nc-l{color:var(--c6)}
+.c7 .nc-l{color:var(--c7)} .c8 .nc-l{color:var(--c8)} .c9 .nc-l{color:var(--c9)}
+.nc-t{font-size:9.5px;color:#8a9099;line-height:1.65;font-weight:300}
+
+/* COUNTRY MIGRATION */
+.cc{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--c2);border-radius:3px;padding:18px 22px;margin-bottom:18px}
+.ct{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:var(--c2);margin-bottom:4px}
+.cs{font-size:9px;color:var(--muted);letter-spacing:.07em;margin-bottom:14px}
+.mt{display:flex;gap:0;align-items:stretch;border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.me{flex:1;padding:11px 13px;border-right:1px solid var(--border)}
+.me:last-child{border-right:none}
+.md{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:3px}
+.mm{font-size:10px;font-weight:500;margin-bottom:2px}
+.ma{font-size:8px;color:var(--muted);line-height:1.5;font-style:italic}
+.mx{display:flex;align-items:center;padding:0 5px;color:var(--muted2);font-size:11px;flex-shrink:0}
+.clin{background:var(--bg3);border:1px solid rgba(212,80,80,.2);border-left:2px solid var(--c5);border-radius:3px;padding:12px 16px;margin-top:12px}
+.clin-l{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--c5);margin-bottom:5px}
+.clin-t{font-size:10px;color:#9aa0a8;line-height:1.7;font-weight:300}
+.clin-t strong{color:var(--white);font-weight:400}
+
+/* SUB-GENRES */
+.sg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.sgc{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:14px}
+.sg-hd{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.sg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sg-t{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:400}
+.sgi{display:flex;gap:7px;align-items:flex-start;padding:5px 0;border-bottom:1px solid var(--border);font-size:9.5px;color:#8a9099;line-height:1.5;font-weight:300}
+.sgi:last-child{border-bottom:none;padding-bottom:0}
+.sia{color:var(--white);font-weight:400;min-width:82px;flex-shrink:0;font-size:9px}
+
+/* PSYCHEDELIC NOTE */
+.pnote{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--c9);border-radius:3px;padding:13px 17px;margin-bottom:16px}
+.pnote-l{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--c9);margin-bottom:5px}
+.pnote-t{font-size:10px;color:#8a9099;line-height:1.7;font-weight:300}
+.pnote-t strong{color:var(--white);font-weight:400}
+
+/* BEATLES */
+.bn{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--c2);border-radius:3px;padding:13px 17px;margin-bottom:16px}
+.bn-l{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--c2);margin-bottom:5px}
+.bn-t{font-size:10px;color:#8a9099;line-height:1.7;font-weight:300}
+.bn-t strong{color:var(--white);font-weight:400}
+
+/* TIMELINE */
+.tlc{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:22px 26px;margin-bottom:14px}
+.tlt{position:relative;display:flex;justify-content:space-between}
+.tll{position:absolute;top:7px;left:0;right:0;height:1px;background:var(--border)}
+.tlf{position:absolute;top:7px;left:0;height:1px;width:10%;background:linear-gradient(90deg,var(--c2),var(--c1))}
+.tln{display:flex;flex-direction:column;align-items:center;position:relative}
+.tld{width:14px;height:14px;border-radius:50%;margin-bottom:9px;position:relative;z-index:2;flex-shrink:0;border:2px solid var(--border);background:var(--bg2)}
+.tld.active{border-color:var(--c2);background:var(--c2);box-shadow:0 0 10px rgba(201,145,58,.5)}
+.tld.near{border-color:var(--muted2)}
+.tltime{font-size:7.5px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:3px;text-align:center}
+.tllbl{font-family:'Cormorant Garamond',serif;font-size:11px;text-align:center;line-height:1.3;max-width:82px}
+.tlsub{font-size:7.5px;color:var(--muted);text-align:center;margin-top:3px;line-height:1.4;max-width:82px}
+.tln.active .tllbl{color:var(--c2)}
+
+.footer{border-top:1px solid var(--border);margin-top:36px;padding-top:16px;display:flex;justify-content:space-between;align-items:center}
+.fl{font-size:9px;color:var(--muted2);line-height:1.7;letter-spacing:.05em}
+.fbs{display:flex;gap:8px}
+.fb{font-size:8px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted2);border:1px solid var(--muted2);padding:3px 7px;border-radius:2px}
+
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ac:nth-child(1){animation-delay:.04s}.ac:nth-child(2){animation-delay:.08s}.ac:nth-child(3){animation-delay:.12s}
+.ac:nth-child(4){animation-delay:.16s}.ac:nth-child(5){animation-delay:.20s}.ac:nth-child(6){animation-delay:.24s}
+.ac:nth-child(7){animation-delay:.28s}.ac:nth-child(8){animation-delay:.32s}.ac:nth-child(9){animation-delay:.36s}
+</style>
+</head>
+<body>
+<div class="poster">
+
+<div class="hdr">
+  <div>
+    <div class="eyebrow">Extended Taxonomy — Nine Architecture Types</div>
+    <h1>Music <em>Architecture</em><br>&amp; Neurochemistry of Reward</h1>
+    <p class="sub">Gospel · Psychedelic / Improvisational · Country &amp; Swift Migration · Contemporary Pop · Singer-Songwriter · Punk/Ska · Reggae · Blues/Jazz · Classic Rock · EDM</p>
+  </div>
+  <div class="hdr-r">
+    <div class="badge">Extended Study — v3</div><br>
+    <div style="font-size:10px;color:var(--muted2);letter-spacing:.08em">April 2026</div>
+  </div>
+</div>
+
+<div class="sdiv">
+  <div class="sdiv-l">Energy Architecture Taxonomy</div>
+  <div class="sdiv-line"></div>
+  <div class="sdiv-c">09 Types — 3×3</div>
+</div>
+
+<div class="arch-grid">
+
+<div class="ac c1">
+  <div class="ac-n">1</div>
+  <div class="ac-name">Drop-Reset Cycling</div>
+  <div class="ac-tag">EDM / Trap / Modern Country</div>
+  <svg class="ac-wave" viewBox="0 0 160 34"><path fill="none" stroke="#2ab8c8" stroke-width="1.5" stroke-linecap="round" d="M0,26 C7,24 11,5 20,3 C24,2 26,14 33,22 C40,29 42,22 49,20 C57,18 61,3 70,1 C74,0 76,12 83,20 C90,28 92,21 99,19 C107,17 111,3 120,1 C124,0 126,13 133,21 C140,29 143,21 151,19 L160,18"/>
+  <circle cx="20" cy="3" r="1.5" fill="#2ab8c8" opacity=".6"/>
+  <circle cx="70" cy="1" r="1.5" fill="#2ab8c8" opacity=".6"/>
+  <circle cx="120" cy="1" r="1.5" fill="#2ab8c8" opacity=".6"/>
+  </svg>
+  <div class="ac-g">Modern EDM, trap, commercial pop, modern country pop (post-2010)</div>
+  <div class="ac-e">Guetta, Tiësto, Morgan Wallen, Florida Georgia Line, Calvin Harris</div>
+</div>
+
+<div class="ac c2">
+  <div class="ac-n">2</div>
+  <div class="ac-name">Continuous Ascent</div>
+  <div class="ac-tag">Classic / Arena / Outlaw Rock</div>
+  <svg class="ac-wave" viewBox="0 0 160 34"><path fill="none" stroke="#c9913a" stroke-width="1.5" stroke-linecap="round" d="M0,32 C25,30 55,22 85,12 C110,4 135,1 160,0"/>
+  <circle cx="160" cy="0" r="2.5" fill="#c9913a" opacity=".7"/>
+  </svg>
+  <div class="ac-g">Classic rock, arena rock, prog rock, outlaw country</div>
+  <div class="ac-e">Aerosmith, Led Zeppelin, The Who, Yes, Willie Nelson, Waylon Jennings</div>
+</div>
+
+<div class="ac c3">
+  <div class="ac-n">3</div>
+  <div class="ac-name">Intimate Narrative Arc</div>
+  <div class="ac-tag">Singer-Songwriter / Nashville Pop</div>
+  <svg class="ac-wave" viewBox="0 0 160 34"><path fill="none" stroke="#c85a8a" stroke-width="1.5" stroke-linecap="round" d="M0,24 C20,22 40,18 65,16 C90,14 110,15 130,16 C142,17 150,18 160,19"/>
+  <circle cx="65" cy="16" r="1.5" fill="#c85a8a" opacity=".6"/>
+  </svg>
+  <div class="ac-g">Singer-songwriter, soft rock, Nashville pop / countrypolitan</div>
+  <div class="ac-e">Carole King, James Taylor, Neil Diamond, Neil Sedaka, Glen Campbell, Jim Reeves</div>
+</div>
+
+<div class="ac c4">
+  <div class="ac-n">4</div>
+  <div class="ac-name">Cyclical Call-Response</div>
+  <div class="ac-tag">Blues / Jazz / Bluegrass / Soul</div>
+  <svg class="ac-wave" viewBox="0 0 160 34"><path fill="none" stroke="#7a7fd4" stroke-width="1.5" stroke-linecap="round" d="M0,26 C7,22 13,7 22,5 C28,4 32,14 40,20 C46,24 53,17 62,11 C68,7 74,5 82,7 C88,9 92,17 100,21 C106,24 112,17 120,13 C126,10 132,6 140,7 C146,8 150,14 160,16"/>
+  </svg>
+  <div class="ac-g">Blues, jazz, soul, R&amp;B, bluegrass, secular gospel derivatives</div>
+  <div class="ac-e">BB King, Miles Davis, Aretha Franklin, Bill Monroe, Ray Charles, James Brown</div>
+</div>
+
+<div class="ac c5">
+  <div class="ac-n">5</div>
+  <div class="ac-name">Burst / Compressed</div>
+  <div class="ac-tag">Punk / Ska / Early Rock &amp; Roll</div>
+  <svg class="ac-wave" viewBox="0 0 160 34"><path fill="none" stroke="#d45050" stroke-width="1.5" stroke-linecap="round" d="M0,30 L3,30 L3,3 L33,3 L33,30 L37,30 L41,30 L41,3 L71,3 L71,30 L75,30 L79,30 L79,3 L109,3 L109,30 L113,30 L117,30 L117,3 L160,3"/>
+  </svg>
+  <div class="ac-g">Punk, ska, early rock &amp; roll, rockabilly</div>
+  <div class="ac-e">Ramones, The Clash, The Specials, Madness, Chuck Berry, Little Richard</div>
+</div>
+
+<div class="ac c6">
+  <div class="ac-n">6</div>
+  <div class="ac-name">Perpetual Groove</div>
+  <div class="ac-tag">Reggae / Funk / Afrobeat</div>
+  <svg class="ac-wave" viewBox="0 0 160 34"><path fill="none" stroke="#4caf7d" stroke-width="1.5" stroke-linecap="round" d="M0,19 C7,17 11,13 17,13 C23,13 27,19 33,19 C39,19 43,13 49,13 C55,13 59,19 65,19 C71,19 75,13 81,13 C87,13 91,19 97,19 C103,19 107,13 113,13 C119,13 123,19 129,19 C135,19 139,13 145,13 C150,13 154,15 160,17"/>
+  </svg>
+  <div class="ac-g">Reggae, funk, Afrobeat, some disco</div>
+  <div class="ac-e">Bob Marley, Peter Tosh, James Brown, Fela Kuti, Toots and the Maytals</div>
+</div>
+
+<div class="ac c7">
+  <div class="ac-n">7</div>
+  <div class="ac-name">Plateau / Sustained</div>
+  <div class="ac-tag">Ambient / Shoegaze / Drone</div>
+  <svg class="ac-wave" viewBox="0 0 160 34"><path fill="none" stroke="#7a9ab5" stroke-width="1.5" stroke-linecap="round" d="M0,30 C12,26 22,12 36,10 C42,9 48,9 65,9 C100,9 115,9 130,10 C140,11 148,12 160,13"/>
+  </svg>
+  <div class="ac-g">Ambient, shoegaze, drone, some soul ballads</div>
+  <div class="ac-e">Brian Eno, My Bloody Valentine, Mazzy Star, early Pink Floyd (post-Barrett)</div>
+</div>
+
+<div class="ac c8">
+  <div class="ac-n">8</div>
+  <div class="ac-name">Gospel / Communal Escalation</div>
+  <div class="ac-tag">Gospel / Praise &amp; Worship</div>
+  <svg class="ac-wave" viewBox="0 0 160 34"><path fill="none" stroke="#9b6dca" stroke-width="1.5" stroke-linecap="round" d="M0,30 C4,28 8,20 15,18 C19,17 21,19 26,21 C30,23 32,19 38,16 C42,14 44,16 48,17 C52,18 54,14 60,11 C64,9 66,11 70,12 C74,13 76,9 82,6 C86,4 88,6 92,7 C96,8 98,4 104,2 C108,1 110,2 114,3 C118,4 120,1 126,0 L160,0"/>
+  <circle cx="15" cy="18" r="1.5" fill="#9b6dca" opacity=".5"/>
+  <circle cx="38" cy="16" r="1.5" fill="#9b6dca" opacity=".5"/>
+  <circle cx="60" cy="11" r="1.5" fill="#9b6dca" opacity=".5"/>
+  <circle cx="82" cy="6" r="1.5" fill="#9b6dca" opacity=".5"/>
+  <circle cx="104" cy="2" r="1.5" fill="#9b6dca" opacity=".7"/>
+  </svg>
+  <div class="ac-g">Traditional gospel, Southern gospel, contemporary gospel, country gospel, praise &amp; worship</div>
+  <div class="ac-e">Mahalia Jackson, Thomas Dorsey, Tennessee Ernie Ford, Andraé Crouch, Kirk Franklin, Carter Family</div>
+</div>
+
+<div class="ac c9">
+  <div class="ac-n">9</div>
+  <div class="ac-name">Psychedelic / Improvisational</div>
+  <div class="ac-tag">Acid Rock / Jam Band / Krautrock</div>
+  <svg class="ac-wave" viewBox="0 0 160 34">
+    <!-- Wandering, no direction — genuinely unpredictable -->
+    <path fill="none" stroke="#7ac43a" stroke-width="1.5" stroke-linecap="round"
+      d="M0,20 C8,18 12,8 20,6 C26,5 28,14 34,20 C38,24 42,22 48,16 C54,10 58,4 66,5 C72,6 74,18 80,22 C84,25 88,20 94,12 C100,5 104,3 112,8 C118,12 120,20 126,24 C130,27 134,22 140,14 C146,7 150,4 160,8"/>
+  </svg>
+  <div class="ac-g">San Francisco acid rock, British psychedelia, jam band tradition, Krautrock</div>
+  <div class="ac-e">Grateful Dead, Quicksilver Messenger Service, Jefferson Airplane, Pink Floyd (Barrett era), Phish, Can, Neu!, Beatles (Revolver–White Album)</div>
+</div>
+
+</div>
+
+<!-- NEURO MAP 3x3 -->
+<div class="sdiv">
+  <div class="sdiv-l">Neurochemical Mapping</div>
+  <div class="sdiv-line"></div>
+  <div class="sdiv-c">9 Reward Pathway Predictions</div>
+</div>
+
+<div class="neuro-grid">
+  <div class="nc c1"><div class="nc-l">Drop-Reset</div><div class="nc-t">Phasic dopamine craving–hit–baseline loop. No resolution. Addiction cycling analog.</div></div>
+  <div class="nc c2"><div class="nc-l">Continuous Ascent</div><div class="nc-t">Delayed gratification. Sustained anticipation with full resolution. Healthy goal-directed behavior.</div></div>
+  <div class="nc c3"><div class="nc-l">Intimate Narrative</div><div class="nc-t">Attachment circuitry. Oxytocin–dopamine overlap. Emotional salience over sonic climax.</div></div>
+  <div class="nc c4"><div class="nc-l">Call-Response</div><div class="nc-t">Social reward circuitry. Partial reward sustaining anticipation. Interpersonal dialogue dopamine.</div></div>
+  <div class="nc c5"><div class="nc-l">Burst / Compressed</div><div class="nc-t">Impulsivity analog. Immediate release, no anticipation phase. Distinct from cycling — no craving buildup.</div></div>
+  <div class="nc c6"><div class="nc-l">Perpetual Groove</div><div class="nc-t">Motor-dopamine coupling. Basal ganglia rhythm entrainment. Synchrony reward. Lateral, not phasic.</div></div>
+  <div class="nc c7"><div class="nc-l">Plateau / Sustained</div><div class="nc-t">Tonic dopamine. Flow-state analog. Sustained engagement without cycling. Possibly meditative.</div></div>
+  <div class="nc c8"><div class="nc-l">Gospel / Communal</div><div class="nc-t">Communal vocalization endorphins. Oxytocin via group synchrony. Emotional catharsis. Escalation without conventional resolution — transcendence.</div></div>
+  <div class="nc c9"><div class="nc-l">Psychedelic / Improv</div><div class="nc-t">Novelty-seeking dopamine (reward of the unexpected). Serotonergic entrainment in intended chemical context. Architecture explicitly designed for altered neurochemical states — unique in the dataset.</div></div>
+</div>
+
+<!-- COUNTRY MIGRATION -->
+<div class="sdiv">
+  <div class="sdiv-l">Country Music — Cross-Era Migration</div>
+  <div class="sdiv-line"></div>
+  <div class="sdiv-c">Types 3→2→4→8→1</div>
+</div>
+
+<div class="cc">
+  <div class="ct">Country Music Architectural Migration — 1930s to Present</div>
+  <div class="cs">The only genre to traverse five distinct architecture types across its history</div>
+  <div class="mt">
+    <div class="me" style="background:rgba(200,90,138,.05)">
+      <div class="md">1930s–60s</div>
+      <div class="mm" style="color:var(--c3)">Type 3 — Intimate Narrative</div>
+      <div class="ma">Hank Williams, Patsy Cline, Merle Haggard, Loretta Lynn</div>
+    </div>
+    <div class="mx">›</div>
+    <div class="me" style="background:rgba(201,145,58,.05)">
+      <div class="md">1970s–80s</div>
+      <div class="mm" style="color:var(--c2)">Type 2 — Continuous Ascent</div>
+      <div class="ma">Willie Nelson, Waylon Jennings, Emmylou Harris</div>
+    </div>
+    <div class="mx">›</div>
+    <div class="me" style="background:rgba(122,127,212,.05)">
+      <div class="md">Parallel — Bluegrass</div>
+      <div class="mm" style="color:var(--c4)">Type 4 — Call-Response</div>
+      <div class="ma">Monroe, Flatt &amp; Scruggs, Doc Watson</div>
+    </div>
+    <div class="mx">›</div>
+    <div class="me" style="background:rgba(155,109,202,.05)">
+      <div class="md">Parallel — Country Gospel</div>
+      <div class="mm" style="color:var(--c8)">Type 8 — Gospel Escalation</div>
+      <div class="ma">Tennessee Ernie Ford, Carter Family</div>
+    </div>
+    <div class="mx">›</div>
+    <div class="me" style="background:rgba(42,184,200,.05)">
+      <div class="md">2010s–Present</div>
+      <div class="mm" style="color:var(--c1)">Type 1 — Drop-Reset</div>
+      <div class="ma">Luke Bryan, Florida Georgia Line, Morgan Wallen</div>
+    </div>
+  </div>
+  <div class="clin">
+    <div class="clin-l">Clinical Parallel — Secondary Analysis</div>
+    <div class="clin-t">Country's architectural migration from Type 3 to Type 1 occurred between <strong>2008–2016</strong>. The opioid epidemic in rural white America accelerated between <strong>2010–2017</strong>. <strong>Geographic, demographic, temporal, and now architectural</strong> — the most clinically pointed secondary analysis the study can produce.</div>
+  </div>
+</div>
+
+
+<!-- SWIFT MIGRATION NOTE -->
+<div style="background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--c3);border-radius:3px;padding:16px 22px;margin-bottom:18px">
+  <div style="font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--c3);margin-bottom:6px">Contemporary Parallel — Taylor Swift Architectural Migration</div>
+  <div style="display:flex;gap:0;align-items:stretch;border:1px solid var(--border);border-radius:3px;overflow:hidden;margin-bottom:10px">
+    <div style="flex:1;padding:10px 12px;border-right:1px solid var(--border);background:rgba(200,90,138,.05)">
+      <div style="font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:3px">2006–2010</div>
+      <div style="font-size:10px;font-weight:500;color:var(--c3);margin-bottom:2px">Type 3 — Intimate Narrative</div>
+      <div style="font-size:8px;color:var(--muted);font-style:italic">Taylor Swift, Fearless, Speak Now — Nashville pop structure; architecturally identical to Carole King</div>
+    </div>
+    <div style="display:flex;align-items:center;padding:0 5px;color:var(--muted2);font-size:11px;flex-shrink:0">›</div>
+    <div style="flex:1;padding:10px 12px;border-right:1px solid var(--border);background:rgba(42,184,200,.05)">
+      <div style="font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:3px">2012–2017</div>
+      <div style="font-size:10px;font-weight:500;color:var(--c1);margin-bottom:2px">Type 1 — Drop-Reset Cycling</div>
+      <div style="font-size:8px;color:var(--muted);font-style:italic">1989, Reputation — Max Martin production; mirrors country migration in timing and destination</div>
+    </div>
+    <div style="display:flex;align-items:center;padding:0 5px;color:var(--muted2);font-size:11px;flex-shrink:0">↩</div>
+    <div style="flex:1;padding:10px 12px;background:rgba(200,90,138,.05)">
+      <div style="font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:3px">2020 — The Reversal</div>
+      <div style="font-size:10px;font-weight:500;color:var(--c3);margin-bottom:2px">Type 3 Return + Type 7 Elements</div>
+      <div style="font-size:8px;color:var(--muted);font-style:italic">Folklore, Evermore — voluntary retreat from Type 1 at peak commercial success; unique in the dataset</div>
+    </div>
+  </div>
+  <div style="font-size:10px;color:#8a9099;line-height:1.7;font-weight:300">No other artist of comparable commercial scale has <strong style="color:var(--white);font-weight:400">voluntarily abandoned Type 1 architecture and reversed to patient earned-resolution</strong>. Country music made the same migration but has not reversed. Swift's arc is the contemporary dataset's most important single-artist data point — same window, same destination, different outcome.</div>
+</div>
+
+<!-- PSYCHEDELIC NOTE -->
+<div class="pnote">
+  <div class="pnote-l">Type 9 — Architecture Predicts Substance</div>
+  <div class="pnote-t">The Grateful Dead's audience substance use was predominantly <strong>psychedelic rather than opioid or stimulant</strong>. If the study demonstrates that drop-reset cycling correlates with opioid/stimulant use and psychedelic architecture correlates with psychedelic use, the <strong>architecture-predicts-substance hypothesis</strong> is supported across two data points simultaneously. Type 9 makes that test possible. The Dead's crowd was also a structural participant in the architecture — the only case in the dataset where the audience co-generates the form in real time.</div>
+</div>
+
+<!-- SUB-GENRE GROUPINGS -->
+<div class="sdiv">
+  <div class="sdiv-l">Selected Sub-Genre Groupings</div>
+  <div class="sdiv-line"></div>
+</div>
+
+<div class="sg-grid">
+  <div class="sgc">
+    <div class="sg-hd"><div class="sg-dot" style="background:var(--c9)"></div><div class="sg-t" style="color:var(--c9)">Psychedelic / Improvisational</div></div>
+    <div class="sgi"><span class="sia">Grateful Dead</span><span>Extended improvisational architecture; song structures as anchors not destinations; audience as structural co-participant — unique in dataset</span></div>
+    <div class="sgi"><span class="sia">Quicksilver Messenger Service</span><span>Happy Trails — most harmonically adventurous of the SF bands; extended improvisation with no predetermined destination</span></div>
+    <div class="sgi"><span class="sia">Jefferson Airplane</span><span>Moves between Types 3, 5, and 9 within albums; Somebody to Love (Type 5), White Rabbit (Type 9), Today (Type 3)</span></div>
+    <div class="sgi"><span class="sia">Pink Floyd (Barrett era)</span><span>Composed disorientation — closer to Type 7 with Type 9 surface features; post-Barrett Floyd moves toward Types 2 and 7</span></div>
+    <div class="sgi"><span class="sia">Phish / Widespread Panic</span><span>Carry the Dead's improvisational architecture with more frequent resolution points; transitional between Types 9 and 2</span></div>
+    <div class="sgi"><span class="sia">Can / Neu! (Krautrock)</span><span>Motorik repetition replaces improvisation; closer to Type 6 with Type 9 disorientation; boundary cases that test the taxonomy</span></div>
+  </div>
+
+  <div class="sgc">
+    <div class="sg-hd"><div class="sg-dot" style="background:var(--c8)"></div><div class="sg-t" style="color:var(--c8)">Gospel — Secular Derivatives</div></div>
+    <div class="sgi"><span class="sia">Jackie Wilson</span><span>Earliest bridge — pure gospel vocal architecture (melisma, escalation, breaking point) applied to secular R&amp;B; influenced James Brown and Michael Jackson; makes downstream lineage traceable</span></div>
+    <div class="sgi"><span class="sia">Sam Cooke</span><span>Gospel architecture translated intact into secular pop — same escalation mechanics in You Send Me as in Soul Stirrers recordings; clearest proof the taxonomy is structural not genre-based</span></div>
+    <div class="sgi"><span class="sia">Otis Redding</span><span>Try a Little Tenderness: opens as Type 3, transforms into Type 8 within a single track — within-song architectural migration and proof of concept for Spotify segment-level methodology</span></div>
+    <div class="sgi"><span class="sia">Al Green</span><span>Reverse migration: secular Type 3/4 → ordained minister → pure Type 8; same voice traversing two architecture types across a documented biographical arc — rarest evidence in the dataset</span></div>
+    <div class="sgi"><span class="sia">Ray Charles</span><span>What'd I Say — gospel call-response enters the secular Billboard corpus; bridges Types 4 and 8 in the public record</span></div>
+    <div class="sgi"><span class="sia">Bill Withers</span><span>No gospel background — arrived at Type 8 architecture through emotional instinct alone. Lean on Me: verse as solo testimony, chorus as collective invitation, bridge as direct request for participation. Lovely Day: longest sustained note in pop recording history — the gospel transcendence moment, frozen and extended.</span></div>
+  </div>
+
+  <div class="sgc">
+    <div class="sg-hd"><div class="sg-dot" style="background:var(--c5)"></div><div class="sg-t" style="color:var(--c5)">Burst / Groove / Narrative</div></div>
+    <div class="sgi"><span class="sia">First-Wave Punk</span><span>Ramones, Sex Pistols, The Clash — immediate intensity, no buildup, rapid complete discharge; structurally opposite to EDM cycling</span></div>
+    <div class="sgi"><span class="sia">Two-Tone Ska</span><span>The Specials, Madness — burst architecture with offbeat rhythmic accent; partial groove overlap with Type 6</span></div>
+    <div class="sgi"><span class="sia">Early Rock &amp; Roll</span><span>Chuck Berry, Little Richard — burst architecture with boogie underpinning; closer to punk than classic rock structurally</span></div>
+    <div class="sgi"><span class="sia">Roots Reggae</span><span>Bob Marley, Peter Tosh — lateral architecture; no ascent or drop; purely groove-based momentum</span></div>
+    <div class="sgi"><span class="sia">Dancehall</span><span>Later reggae — BPM increases, bass drops introduced; transitional case between Types 6 and 1; reggae's own country-migration moment</span></div>
+    <div class="sgi"><span class="sia">Nashville Pop (1960s–90s)</span><span>Jim Reeves, Glen Campbell, Kenny Rogers — Type 3 in country clothing; polished production, low dynamic range, lyrical resolution</span></div>
+  </div>
+
+  <div class="sgc">
+    <div class="sg-hd"><div class="sg-dot" style="background:var(--c3)"></div><div class="sg-t" style="color:var(--c3)">Contemporary Pop — Migration &amp; Calibration</div></div>
+    <div class="sgi"><span class="sia">Taylor Swift</span><span>Type 3 (2006–10) → Type 1 (2012–17) → Type 3 return (2020) — only artist of comparable scale to reverse a Type 1 migration voluntarily; her Folklore/Evermore retreat is the dataset's most important single-artist data point</span></div>
+    <div class="sgi"><span class="sia">Katy Perry</span><span>Maximally pure Type 1 calibration specimen (Roar, Firework, Teenage Dream) — empowerment lyrical content with neutral drug references; ideal Cell B in the 2×2 lyrical design; the neuroimaging standard for uncontaminated drop-reset cycling</span></div>
+    <div class="sgi"><span class="sia">Beyoncé</span><span>Lemonade: Type 3 (Sandcastles) + Type 1 (Formation) + Type 4 (Freedom) + Type 2 (All Night) within one album — contemporary cross-taxonomy range approaching Beatles scale; Renaissance alternates Type 1 and Type 6</span></div>
+    <div class="sgi"><span class="sia">Billie Eilish</span><span>Type 1 subversion — builds anticipation, withholds the drop; operates in Type 7 territory with Type 1 surface features; bad guy and Bury a Friend test what the dopaminergic loop does when the hit is deliberately withheld</span></div>
+    <div class="sgi"><span class="sia">Adele</span><span>Contemporary Type 3 at stadium scale — Someone Like You, Hello, Rolling in the Deep; demonstrates that patient earned-resolution architecture sustains mass commercial success in a Type 1 production environment</span></div>
+    <div class="sgi"><span class="sia">Ed Sheeran</span><span>Shape of You: purest evidence that architecture is independent of sonic costume — drop-reset cycling in acoustic folk instrumentation; Bad Habits completes the migration with full EDM production</span></div>
+  </div>
+</div>
+
+<!-- BEATLES CROSS-TAXONOMY -->
+<div class="bn">
+  <div class="bn-l">Cross-Taxonomy Case Study — The Beatles (Six of Nine Architecture Types)</div>
+  <div class="bn-t"><strong>Type 3</strong> (Yesterday, Blackbird — intimate narrative) · <strong>Type 2</strong> (A Day in the Life — ascent sections) · <strong>Type 4</strong> (I've Got a Feeling — call-response) · <strong>Type 5</strong> (Helter Skelter — burst) · <strong>Type 8</strong> (Let It Be — gospel-adjacent) · <strong>Type 9</strong> (Tomorrow Never Knows, I Am the Walrus, Revolution 9 — psychedelic/improvisational). Their structural evolution from 1962 to 1970 traces six of the nine architecture types and makes them the single most valuable cross-taxonomy validation case in the dataset. The reclassification of Tomorrow Never Knows from Type 7 (plateau) to Type 9 (psychedelic) is supported by the deliberate disorientation and tape-loop construction — sustained calm vs. intended neurochemical disruption are architecturally distinct.</div>
+</div>
+
+<!-- TIMELINE -->
+<div class="sdiv">
+  <div class="sdiv-l">Extended Study Timeline</div>
+  <div class="sdiv-line"></div>
+  <div class="sdiv-c">~36–42 Months</div>
+</div>
+
+<div class="tlc">
+  <div class="tlt">
+    <div class="tll"></div>
+    <div class="tlf"></div>
+    <div class="tln active">
+      <div class="tld active"></div>
+      <div class="tltime">Now</div>
+      <div class="tllbl">Proof of Concept</div>
+      <div class="tlsub">All 9 types + country arc plotted from Spotify</div>
+    </div>
+    <div class="tln">
+      <div class="tld near"></div>
+      <div class="tltime">Mo. 1–3</div>
+      <div class="tllbl">Dataset &amp; Annotation</div>
+      <div class="tlsub">Billboard · gospel NLP · country coding · Dead setlists</div>
+    </div>
+    <div class="tln">
+      <div class="tld near"></div>
+      <div class="tltime">Mo. 3–6</div>
+      <div class="tllbl">Team Assembly</div>
+      <div class="tlsub">MIR · music theorist · neuroscience · epi · NLP</div>
+    </div>
+    <div class="tln">
+      <div class="tld"></div>
+      <div class="tltime">Mo. 6–10</div>
+      <div class="tllbl">Taxonomy Validation</div>
+      <div class="tlsub">Clustering confirms or revises 9-type taxonomy</div>
+    </div>
+    <div class="tln">
+      <div class="tld"></div>
+      <div class="tltime">Mo. 12–18</div>
+      <div class="tllbl">Fellowship Begins</div>
+      <div class="tlsub">IRB · NIDA/SAMHSA grant · institutional home</div>
+    </div>
+    <div class="tln">
+      <div class="tld"></div>
+      <div class="tltime">Mo. 18–30</div>
+      <div class="tllbl">Full Linkage</div>
+      <div class="tlsub">Rural NSDUH · country arc · Dead audience analysis</div>
+    </div>
+    <div class="tln">
+      <div class="tld"></div>
+      <div class="tltime">Mo. 32–42</div>
+      <div class="tllbl">Publication + 9-Part Stimulus Set</div>
+      <div class="tlsub">Paper · 9 AI pieces · country migration film</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="fl">
+    Type 9 enables the architecture-predicts-substance hypothesis across two independent data points.<br>
+    Country migration is the most clinically pointed secondary analysis the dataset can produce.
+  </div>
+  <div class="fbs">
+    <div class="fb">9 Architecture Types</div>
+    <div class="fb">Swift Migration Arc</div>
+    <div class="fb">Country Migration</div>
+    <div class="fb">Beatles — 6 of 9 Types</div>
+    <div class="fb">April 2026</div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
